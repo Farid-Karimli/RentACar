@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent a car</title>
+    <style>
+        header,main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #cars {
+            display: flex;
+            flex-direction: row;
+        }
+        .car {
+            margin: 0 5vw;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Rent a Car</h1>
+        <h3>Here you can choose from a multitude of cars to rent! </h3>
+    </header>
+
+    <main>
+        <h5>Available cars: </h5>
+        <div id="cars">
+            <div th:each="car : ${cars}" class="car">
+                <h4 th:text="${car.manufacturer}"></h4>
+                <p th:text="${car.model}"></p>
+                <p th:text="${car.year}"></p>
+                <p th:text="${car.MPG}"></p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
