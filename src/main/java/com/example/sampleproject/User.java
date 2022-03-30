@@ -30,6 +30,9 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
+    @Column(name = "phone", length = 10)
+    private String phone;
+
     // getters and setters are not shown
 
     public String getPassword() {
@@ -70,5 +73,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
