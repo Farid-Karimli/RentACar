@@ -40,6 +40,15 @@
       </tr>
       </tbody>
     </table>
+
+    <h5>Available cars: </h5>
+        <div id="cars">
+            <div th:each="car : ${cars}" class="car">
+                <h4 th:text="${car.manufacturer}"></h4>
+            </div>
+        </div>
+
+
   </div>
 </div>
 </body>

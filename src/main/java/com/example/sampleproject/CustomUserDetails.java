@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/* This is needed for specifying for the registration and login */
 public class CustomUserDetails implements UserDetails {
 
     private User user;
@@ -20,13 +21,11 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        System.out.println("User password" + user.getPassword());
         return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        System.out.println("User email" + user.getEmail());
         return user.getEmail();
     }
 

@@ -1,18 +1,38 @@
 package com.example.sampleproject;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+/* An @Entity class defines a class that will be turned into a table in the database
+*  You use @Table to set up some configuration variables, including the table's name as you see below
+*  You use @Column to define a column in the table, which is an attribute of the class. You also specify the column name,
+*  whether it can be null, unique and the length if it's a string
+*/
+@Entity
+@Table(name="Cars")
 public class Car {
-    private long id;
-    private String manufacturer,model;
+
+    /* This is the id column, it starts from 1 and gets incremented every time a Car is added to the table
+    *  Equivalent of AUTO_INCREMENT in MySQL
+    */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name="manufacturer",nullable = false, unique = true, length = 45)
+    private String manufacturer;
+
+    @Column(name="model",nullable = false, length = 45)
+    private String model;
+
+    @Column(name="release_year")
     private int year;
+
+    @Column(name = "MPG", nullable = false)
     private double MPG;
 
-    public Car(long id, String maker,String model, int year, double mpg) {
-        this.id = id;
-        this.manufacturer = maker;
-        this.model = model;
-        this.year = year;
-        this.MPG = mpg;
-    }
+
 
     public double getMPG() {
         return MPG;
@@ -50,7 +70,7 @@ public class Car {
     public String toString() {
         return String.format(
                 "Car[id=%d, maker=%s, model=%s, year=%d, MPG=%f]",
-                id,manufacturer,model,year,MPG
+                id,manufacturer
         );
     }
 }

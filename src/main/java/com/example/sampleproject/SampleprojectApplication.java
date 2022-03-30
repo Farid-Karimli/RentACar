@@ -10,27 +10,29 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootApplication
 public class SampleprojectApplication implements CommandLineRunner {
-    private static final Logger log = LoggerFactory.getLogger(SampleprojectApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(SampleprojectApplication.class); // Used for logging anything
     public static void main(String[] args) {
         SpringApplication.run(SampleprojectApplication.class, args);
     }
 
+
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    JdbcTemplate jdbcTemplate; // For connecting to the database if need be
 
+    /* This function creates an instance of Car, and populates its attributes with the provided values */
+    private Car createCar(String manufacturer, String model, int year, double MPG) {
+        Car newCar = new Car();
+        newCar.setManufacturer(manufacturer);
+        newCar.setModel(model);
+        newCar.setMPG(MPG);
+        newCar.setYear(year);
+        return newCar;
+    }
+    @Autowired
+    private CarRepository carRepo;
+    /* Whatever is inside this method will be run when the app is run, before it is rendered */
     public void run(String... strings) throws Exception {
-        /*jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
-        jdbcTemplate.execute("CREATE TABLE Cars(" +
-                "id SERIAL, manufacturer VARCHAR(255), model VARCHAR(255)," +
-                "year int, MPG float)");
 
-        *//* Insert new car into the table *//*
-        jdbcTemplate.update("INSERT INTO Cars(manufacturer,model,year,MPG) VALUES ('Toyota', 'Camry',2022,28)");
 
-        jdbcTemplate.query(
-                "SELECT id, manufacturer, model, year, MPG FROM Cars WHERE manufacturer = ?", new Object[] { "Toyota" },
-                (rs, rowNum) -> new Car(rs.getLong("id"), rs.getString("manufacturer"), rs.getString("model"),
-                                        rs.getInt("year"), rs.getDouble("MPG")))
-                .forEach(car -> log.info(car.toString()));*/
     }
 }

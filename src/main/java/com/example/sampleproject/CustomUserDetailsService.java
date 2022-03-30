@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/* The method below loads a user by its email, which is the primary identifier */
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired

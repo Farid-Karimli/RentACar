@@ -19,22 +19,21 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 @Controller
 public class IndexController {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    JdbcTemplate jdbcTemplate; // For connecting to the database
 
-    /*private List<Car> getAllCars() {
-        return jdbcTemplate.query(
-                "SELECT id, manufacturer, model, year, MPG FROM Cars",
-                (rs, rowNum) -> new Car(rs.getLong("id"), rs.getString("manufacturer"), rs.getString("model"),
-                        rs.getInt("year"), rs.getDouble("MPG")));
-    }*/
-
+    /* This is the route for when the user first enters the app */
     @GetMapping("/")
     public String index(Model model) {
         return "index";
     }
+
+
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private CarRepository carRepo;
 
+    /* Route for the registration, the user is greeted with a form for their login info */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
@@ -42,20 +41,25 @@ public class IndexController {
         return "signup_form";
     }
 
+    /* After user registers and submit, this function handles the creation of the user and the assignment of information */
     @PostMapping("/process_register")
     public String processRegister(User user) {
         /*BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());*/
         user.setPassword(user.getPassword());
-        userRepo.save(user);
+        userRepo.save(user); // saves the user to the database
 
         return "register_success";
     }
 
+    // Shows the list of users, was part of the tutorial I used
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> listUsers = userRepo.findAll();
         model.addAttribute("listUsers", listUsers);
+
+        List<Car> cars = carRepo.findAll();
+        model.addAttribute("cars",cars);
 
         return "users";
     }

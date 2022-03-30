@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+/* This is the security configuration */
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
@@ -29,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @SuppressWarnings("deprecation")
     @Bean
-    public static NoOpPasswordEncoder passwordEncoder() {
+    public static NoOpPasswordEncoder passwordEncoder() { // Password encoder, not used right now
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 
@@ -47,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+    /* Use the method below if you want to secure or unsecure users from entering certain routes of the app
+    * */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
