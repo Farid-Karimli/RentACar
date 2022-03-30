@@ -4,31 +4,59 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+
 
 @Controller
 public class IndexController {
-    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private List<Car> getAllCars() {
+    /*private List<Car> getAllCars() {
         return jdbcTemplate.query(
                 "SELECT id, manufacturer, model, year, MPG FROM Cars",
                 (rs, rowNum) -> new Car(rs.getLong("id"), rs.getString("manufacturer"), rs.getString("model"),
                         rs.getInt("year"), rs.getDouble("MPG")));
-    }
+    }*/
 
     @GetMapping("/")
     public String index(Model model) {
-        /* Get all the cars in the database */
-        List<Car> cars = getAllCars();
-        model.addAttribute("cars",cars);
         return "index";
     }
+    @Autowired
+    private UserRepository userRepo;
 
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+
+        return "signup_form";
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(User user) {
+        /*BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());*/
+        user.setPassword(user.getPassword());
+        userRepo.save(user);
+
+        return "register_success";
+    }
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        List<User> listUsers = userRepo.findAll();
+        model.addAttribute("listUsers", listUsers);
+
+        return "users";
+    }
 }
