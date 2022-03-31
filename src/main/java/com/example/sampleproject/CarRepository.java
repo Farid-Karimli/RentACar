@@ -1,6 +1,7 @@
 package com.example.sampleproject;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -11,4 +12,11 @@ import java.util.List;
 */
 public interface CarRepository extends JpaRepository<Car,Long> {
     public List<Car> findCarByManufacturer(String manufacturer);
+
+    @Query ("Select u from Car u Where u.capacity >= ?1")
+    public List<Car> findCarByCapacity(int capacity);
+
+    public List<Car> findCarByAvailabilty(boolean True);
+
+
 }
