@@ -58,14 +58,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .usernameParameter("email")
-                .defaultSuccessUrl("/users")
+                .defaultSuccessUrl("/home")
                 .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();
 
         http.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll();
-
+        http.authorizeRequests()
+                        .antMatchers("/static/**").permitAll();
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
