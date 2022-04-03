@@ -1,9 +1,6 @@
 package com.example.sampleproject;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
 
 /* An @Entity class defines a class that will be turned into a table in the database
 *  You use @Table to set up some configuration variables, including the table's name as you see below
@@ -40,7 +37,7 @@ public class Car {
    change to be an integer that represents the number of cars available
     */
     @Column(name = "availability",nullable = false)
-    private boolean availability;
+    private int availability;
 
 
 
@@ -62,7 +59,7 @@ public class Car {
 
     public int getCapacity() {return capacity;}
 
-    public boolean getAvailability() {return availability;}
+    public int getAvailability() {return availability;}
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
@@ -82,7 +79,7 @@ public class Car {
 
     public void setCapacity(int capacity) {this.capacity = capacity;}
 
-    public void setAvailability(boolean availability) {this.availability = availability;}
+    public void setAvailability(int availability) {this.availability = availability;}
 
     @Override
     public String toString() {

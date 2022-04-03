@@ -16,10 +16,10 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     /*
     do we want this query to only return cars that are available?(I would think yes)
     */
-    @Query ("Select u from Car u Where u.capacity >= ?1 and u.availability = True")
+    @Query ("Select u from Car u Where u.capacity >= ?1 and u.availability > 0")
     List<Car> findCarByCapacity(int capacity);
 
-    @Query("Select u from Car u Where u.availability = True")
+    @Query("Select u from Car u Where u.availability > 0")
     List<Car> findCarByAvailabilty(boolean True);
 
 
