@@ -28,7 +28,15 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
+    public String getFirstName() {return user.getFirstName();}
+    public String getLastName() {return user.getLastName();}
+    public String getPhone() {return user.getPhone();}
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getId(){return user.getId();}
     @Override
     public boolean isAccountNonExpired() {
         return true;
