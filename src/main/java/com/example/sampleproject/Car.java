@@ -39,6 +39,9 @@ public class Car {
     @Column(name = "availability",nullable = false)
     private int availability;
 
+    @Column(name = "type",nullable = true)
+    private String type;
+
 
 
     public double getMPG() {
@@ -61,6 +64,8 @@ public class Car {
 
     public int getAvailability() {return availability;}
 
+    public String getType() {return type;}
+
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
@@ -80,6 +85,8 @@ public class Car {
     public void setCapacity(int capacity) {this.capacity = capacity;}
 
     public void setAvailability(int availability) {this.availability = availability;}
+
+    private void setType(String type) {this.type = type;}
 
     @Override
     public String toString() {
