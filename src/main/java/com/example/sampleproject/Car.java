@@ -36,6 +36,9 @@ public class Car {
     @Column(name = "capacity", nullable = false)
     private int capacity;
 
+    /*
+   change to be an integer that represents the number of cars available
+    */
     @Column(name = "availability",nullable = false)
     private boolean availability;
 

@@ -11,12 +11,16 @@ import java.util.List;
    public <return type> findCarBy<insert attribute name here>(<attribute type> attribute) is the general format for a method.
 */
 public interface CarRepository extends JpaRepository<Car,Long> {
-    public List<Car> findCarByManufacturer(String manufacturer);
+    List<Car> findCarByManufacturer(String manufacturer);
 
-    @Query ("Select u from Car u Where u.capacity >= ?1")
-    public List<Car> findCarByCapacity(int capacity);
+    /*
+    do we want this query to only return cars that are available?(I would think yes)
+    */
+    @Query ("Select u from Car u Where u.capacity >= ?1 and u.availability = True")
+    List<Car> findCarByCapacity(int capacity);
 
-    public List<Car> findCarByAvailabilty(boolean True);
+    @Query("Select u from Car u Where u.availability = True")
+    List<Car> findCarByAvailabilty(boolean True);
 
 
 }
