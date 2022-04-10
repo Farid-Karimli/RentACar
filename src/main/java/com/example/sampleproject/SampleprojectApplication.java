@@ -28,11 +28,10 @@ public class SampleprojectApplication implements CommandLineRunner {
         newCar.setYear(year);
         return newCar;
     }
-    @Autowired
-    private CarRepository carRepo;
+
+
     /* Whatever is inside this method will be run when the app is run, before it is rendered */
     public void run(String... strings) throws Exception {
-
 
     }
 

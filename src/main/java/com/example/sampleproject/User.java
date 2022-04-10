@@ -55,6 +55,10 @@ public class User {
         return lastName;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -73,10 +77,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPhone() {
-        return phone;
     }
 
     public void setPhone(String phone) {

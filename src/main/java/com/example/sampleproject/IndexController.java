@@ -45,6 +45,8 @@ public class IndexController {
     private UserRepository userRepo;
     @Autowired
     private CarRepository carRepo;
+    @Autowired
+    private ReservationRepository reservationRepo;
 
     @Autowired
     EntityManager entityManager;
@@ -91,6 +93,27 @@ public class IndexController {
         model.addAttribute("cars",cars);
 
         return "cars";
+    }
+
+    @GetMapping("/make_reservation")
+    public String showReservationForm(Model model) {
+        model.addAttribute("reservation", new Reservation());
+        return "reservation_form";
+    }
+
+    @PostMapping("/process_reservation")
+    public String process_reservation(Reservation reservation) {
+        Car car = carRepo.getById(reservation.getVehicleID());
+        User user = userRepo.getById(getLoggedInUser().getId());
+
+        reservation.setLength();
+        reservation.setUserID(user.getId());
+//        reservation.setVehicleID(car.getId()); currently this is useless, but if we implement a better car selection method it won't be
+//        reservation.setDailyVehicleRate(car.getDailyRate());
+//        reservation.setDriverAge(user.getAge());
+
+        reservationRepo.save(reservation);
+        return "reservation_success";
     }
 
 
@@ -153,4 +176,7 @@ public class IndexController {
 
         return new RedirectView("/account");
     }
+
+//    @GetMapping("/create_reservation")
+
 }

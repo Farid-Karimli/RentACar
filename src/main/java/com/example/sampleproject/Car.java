@@ -42,6 +42,9 @@ public class Car {
     @Column(name = "type",nullable = true)
     private String type;
 
+    @Column(name = "daily_rate",nullable = false)
+    private double dailyRate;
+
 
 
     public double getMPG() {
@@ -66,6 +69,10 @@ public class Car {
 
     public String getType() {return type;}
 
+    public double getDailyRate() {return dailyRate;}
+
+    public long getId() { return id; }
+
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
@@ -86,7 +93,11 @@ public class Car {
 
     public void setAvailability(int availability) {this.availability = availability;}
 
+    public void setDailyRate(double dailyRate) {this.dailyRate = dailyRate;}
+
     private void setType(String type) {this.type = type;}
+
+
 
     @Override
     public String toString() {

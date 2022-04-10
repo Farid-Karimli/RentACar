@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Sign Up - CodeJava</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+    <div>
+        <h1>Make Reservation</h1>
+    </div>
+    <form th:action="@{/process_reservation}" th:object="${reservation}"
+          method="post" style="max-width: 600px; margin: auto;">
+
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Select pickup time/date: </label>
+                <div class="col-8">
+                    <input type="datetime-local" th:field="*{startDate}" class="form-control"  />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Select drop-off time/date: </label>
+                <div class="col-8">
+                    <input type="datetime-local" th:field="*{endDate}" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Vehicle ID: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{vehicleID}" class="form-control"
+                           required minlength="2" maxlength="20"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label"> Include insurance? </label>
+                <div class="col-8">
+                    <input type="checkbox" th:field="*{rentalInsurance}" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label"> Include child seat? </label>
+                <div class="col-8">
+                    <input type="checkbox" th:field="*{childSeat}" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label"> Include ski rack? </label>
+                <div class="col-8">
+                    <input type="checkbox" th:field="*{skiRack}" class="form-control">
+                </div>
+            </div>
+
+
+
+            <div>
+                <button type="submit" class="btn btn-primary">Process</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
