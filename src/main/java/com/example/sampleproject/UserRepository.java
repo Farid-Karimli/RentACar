@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.email = ?1") // Can define your own SQL queries
     public User findByEmail(String email);
+
     @Query("SELECT u FROM User u WHERE u.id = ?1")
     public User findById(int id);
 
