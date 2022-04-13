@@ -116,6 +116,14 @@ public class IndexController {
         return "reservation_success";
     }
 
+    @GetMapping("/view_reservations")
+    public String user_reservations(Model model) {
+        List<Reservation> user_reservations = reservationRepo.findReservationsByUserID(getLoggedInUser().getId());
+        model.addAttribute("reservations",user_reservations);
+
+        return "view_reservations";
+    }
+
 
     private static final Logger log = LoggerFactory.getLogger(SampleprojectApplication.class); // Used for logging anything
     public User getLoggedInUser() {
