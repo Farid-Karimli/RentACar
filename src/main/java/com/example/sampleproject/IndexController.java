@@ -45,8 +45,8 @@ public class IndexController {
     private UserRepository userRepo;
     @Autowired
     private CarRepository carRepo;
-    @Autowired
-    private ReservationRepository reservationRepo;
+    /*@Autowired
+    private ReservationRepository reservationRepo;*/
 
     @Autowired
     EntityManager entityManager;
@@ -95,13 +95,13 @@ public class IndexController {
         return "cars";
     }
 
-    @GetMapping("/make_reservation")
+   /* @GetMapping("/make_reservation")
     public String showReservationForm(Model model) {
         model.addAttribute("reservation", new Reservation());
         return "reservation_form";
-    }
+    }*/
 
-    @PostMapping("/process_reservation")
+   /* @PostMapping("/process_reservation")
     public String process_reservation(Reservation reservation) {
         Car car = carRepo.getById(reservation.getVehicleID());
         User user = userRepo.getById(getLoggedInUser().getId());
@@ -114,7 +114,7 @@ public class IndexController {
 
         reservationRepo.save(reservation);
         return "reservation_success";
-    }
+    }*/
 
 
     private static final Logger log = LoggerFactory.getLogger(SampleprojectApplication.class); // Used for logging anything
@@ -152,6 +152,9 @@ public class IndexController {
     public String editAccountView(Model model) {
         return "edit_account";
     }
+
+    @GetMapping("/SearchForCars")
+    public String searchForACar(Model model) {return "SearchForCars";}
 
     @PostMapping("/edit_account")
     @ResponseBody
