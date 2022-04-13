@@ -3,20 +3,43 @@
 <head>
     <title>Search For Cars</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        h3 span {
-            font-size: 22px;
-        }
-        h3 input.search-input {
-            width: 300px;
-            margin-left: auto;
-            float: right
-        }
-        .mt32 {
-            margin-top: 32px;
-        }
-    </style>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="images/RentACar.jpg" width="100px" height="100px" alt="logo"/></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cars">Cars</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Manage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/make_reservation">Make a reservation</a></li>
+                            <li><a class="dropdown-item" href="#">Edit/Cancel a reservation</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Reviews</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/SearchForCars">Search For A Car</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </head>
+
 <body class="mt32">
 <div class="container">
     <h3>
@@ -36,10 +59,10 @@
         </thead>
         <tbody>
         <tr th:each="car: ${cars}">
-            <td th:text="${car.manufacturer}"></td>
-            <td th:text="${car.model}"></td>
-            <td th:text="${car.year}"></td>
-            <td th:text="${car.MPG}"></td>
+            <td th:text="${car.manufacturer}">User ID</td>
+            <td th:text="${car.model}">E-mail</td>
+            <td th:text="${car.year}">First Name</td>
+            <td th:text="${car.MPG}">Last Name</td>
             <td th:text="${car.capacity}"></td>
             <td th:text="${car.type}"></td>
         </tr>

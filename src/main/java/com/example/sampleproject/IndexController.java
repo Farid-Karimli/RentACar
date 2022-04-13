@@ -95,13 +95,13 @@ public class IndexController {
         return "cars";
     }
 
-   /* @GetMapping("/make_reservation")
+    @GetMapping("/make_reservation")
     public String showReservationForm(Model model) {
         model.addAttribute("reservation", new Reservation());
         return "reservation_form";
-    }*/
+    }
 
-   /* @PostMapping("/process_reservation")
+   /*@PostMapping("/process_reservation")
     public String process_reservation(Reservation reservation) {
         Car car = carRepo.getById(reservation.getVehicleID());
         User user = userRepo.getById(getLoggedInUser().getId());
