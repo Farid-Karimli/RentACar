@@ -10,12 +10,12 @@ import java.util.List;
    This is an INTERFACE, not a class.
    public <return type> findCarBy<insert attribute name here>(<attribute type> attribute) is the general format for a method.
 */
-public interface ReservationRepository extends JpaRepository<Reservation,Long> {
+/*public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("SELECT r FROM Reservation r WHERE r.id = ?1") // Can define your own SQL queries
     public Reservation findReservationByID(long reservationID);
 
     @Query("SELECT r FROM Reservation r WHERE r.userID = ?1")
     public Reservation findReservationByUserID(long userID);
-}
+}*/
 
 
