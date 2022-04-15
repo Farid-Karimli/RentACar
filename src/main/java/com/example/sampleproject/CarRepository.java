@@ -20,5 +20,10 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Query("Select u from Car u Where u.availability > 0")
     List<Car> findCarByAvailabilty(boolean True);
 
+    @Query("select u from Car u where u.manufacturer = ?1")
+    List<Car> findAllByManufacturer(String manufacturer);
+
+    @Query("select u from Car u where u.manufacturer = ?1")
+    List<Car> findAllByCapacity(int capacity);
 
 }
