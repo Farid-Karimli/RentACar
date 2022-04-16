@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <title>Cars</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    <style>
+        .heading-center {
+           box-sizing: content-box;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .container {
+            box-sizing: content-box;
+        }
+        .end-text {
+            text-align: end;
+        }
+    </style>
 </head>
 <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -16,7 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="#">Home</a>
+                        <a class="nav-link " aria-current="page" href="/home">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/cars">Cars</a>
@@ -47,21 +60,32 @@
         </div>
     </nav>
 
-        <h3 >
-            <span>Available Cars</span>
-        </h3>
+        <header class="heading-center">
+            <h3>
+                <span>Available Cars</span>
+            </h3>
+        </header>
+
 
         <div class="container">
             <div class="row align-items-start">
-                <div class="col">
-                    <h5>Filter: </h5>
+                <div class="col-3">
+                    <h5 class="end-text">Filter: </h5>
                 </div>
-                <div class="col">
+                <div class="col-4">
+                    <select class="form-select" aria-label="Default select example" name="filter" form="search-cars">
+                        <option selected value="manufacturer">Manufacturer</option>
+                        <option value="model">Model</option>
+                        <option value="type">Type</option>
+                        <option value="capacity">Capacity</option>
+                    </select>
+                </div>
+                <div class="col-4">
                     <form action="/car_search" method="POST" id="search-cars">
-                        <input type="search" placeholder="Search..." class="form-control search-input" data-table="Car" name="manufacturer"/>
+                        <input type="search" placeholder="Search..." class="form-control search-input" data-table="Car" name="value"/>
                     </form>
                 </div>
-                <div class="col">
+                <div class="col-1">
                     <button type="submit " form="search-cars" class="btn btn-primary mb-3"> Search </button>
                 </div>
             </div>

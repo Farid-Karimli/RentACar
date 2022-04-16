@@ -23,7 +23,11 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Query("select u from Car u where u.manufacturer = ?1")
     List<Car> findAllByManufacturer(String manufacturer);
 
-    @Query("select u from Car u where u.manufacturer = ?1")
+    @Query("select u from Car u where u.capacity = ?1")
     List<Car> findAllByCapacity(int capacity);
+
+    List<Car> findAllByModel(String model);
+
+    List<Car> findAllByType(String type);
 
 }

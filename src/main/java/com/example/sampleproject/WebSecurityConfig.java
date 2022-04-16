@@ -67,6 +67,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll();
         http.authorizeRequests()
                         .antMatchers("/static/**").permitAll();
+
+
+
+
+
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }

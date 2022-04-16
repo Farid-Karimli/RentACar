@@ -162,8 +162,19 @@ public class IndexController {
 //    }
 
     @PostMapping("/car_search")
-    public String searchCars(@RequestParam(name="manufacturer") String manufacturer, Model model) {
-        model.addAttribute("cars",carRepo.findAllByManufacturer(manufacturer));
+    public String searchCars(@RequestParam(name="value") String value, @RequestParam(name="filter") String filter, Model model) {
+        if (Objects.equals(filter, "capacity")) {
+            int capacity = Integer.parseInt(value);
+            model.addAttribute("cars",carRepo.findAllByCapacity(capacity));
+        } else if (filter.equals("manufacturer")){
+            model.addAttribute("cars",carRepo.findAllByManufacturer(value));
+        }  else if (filter.equals("model")) {
+            model.addAttribute("cars", carRepo.findAllByModel(value));
+        } else if (filter.equals("type")) {
+            model.addAttribute("cars", carRepo.findAllByType(value));
+        } else {
+            model.addAttribute("cars", carRepo.findAll());
+        }
 
         return "cars";
     }
