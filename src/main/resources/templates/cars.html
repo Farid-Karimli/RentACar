@@ -113,6 +113,7 @@
                 <td th:text="${car.MPG}">Last Name</td>
                 <td th:text="${car.capacity}"></td>
                 <td th:text="${car.type}"></td>
+                <td><a th:href="@{'/car/' + ${car.id}}">View</a></td>
             </tr>
         </tbody>
     </table>

@@ -1,6 +1,8 @@
 package com.example.sampleproject;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.*;
+import java.util.logging.XMLFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -212,4 +212,29 @@ public class IndexController {
 
 //    @GetMapping("/create_reservation")
 
+
+
+    public String parseXMLResponseCar(String response) {
+        Object[] array = response.split("<*+>");
+        log.info("Parsed response: " +  array.toString());
+        return response;
+    }
+
+    @GetMapping("/car/{id}")
+    public String getFooById(@PathVariable String id,Model model) {
+        Optional<Car> car = carRepo.findById(Long.parseLong(id));
+        Car car_object = car.get();
+
+        String manufacturer = car_object.getManufacturer();
+        String carModel = car_object.getModel();
+        int year = car_object.getYear();
+
+        String carImageURL = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + manufacturer + ' ' + carModel + ' ' + year;
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(carImageURL, String.class);
+        log.info(result);
+        model.addAttribute("car",car_object);
+
+        return "car";
+    }
 }
