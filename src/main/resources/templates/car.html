@@ -50,12 +50,20 @@
     <div class="car card text-center">
         <h3 th:text="${car.manufacturer} + ' ' + ${car.model}">Something</h3>
         <div id="image">
-            <img src="http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=Toyota%20Camry" alt="Image goes here"/>
-            <div id="car-info">
-                <p>Release Year: </p><p th:text="${car.year}"></p>
-                <p>Capacity: </p><p th:text="${car.capacity}"></p>
-                <p>MPG: </p><p th:text="${car.MPG}"></p>
-                <p>Daily rate: </p><p th:text="${car.dailyRate}"></p>
+            <img th:src="${car_image}" alt="Image goes here"/>
+            <div id="car-info" class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <p>Release Year: </p><p th:text="${car.year}"></p>
+                        <p>Capacity: </p><p th:text="${car.capacity}"></p>
+                    </div>
+                    <div class="col-6">
+                        <p>MPG: </p><p th:text="${car.MPG}"></p>
+                        <p>Daily rate: </p><p th:text="${car.dailyRate}"></p>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

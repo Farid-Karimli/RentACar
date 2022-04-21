@@ -1,4 +1,6 @@
 package com.example.sampleproject;
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.*;
 import java.util.logging.XMLFormatter;
@@ -22,9 +24,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.web.servlet.view.RedirectView;
+import org.w3c.dom.Document;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transaction;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import static java.rmi.server.LogStream.log;
 
@@ -214,14 +222,18 @@ public class IndexController {
 
 
 
-    public String parseXMLResponseCar(String response) {
-        Object[] array = response.split("<*+>");
-        log.info("Parsed response: " +  array.toString());
-        return response;
+    public String parseXMLResponseCar(String response) throws ParserConfigurationException, IOException, SAXException {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+                new InputSource(new StringReader(response.toString())));
+
+        String result = document.getElementsByTagName("string").item(0).getTextContent();
+        System.out.println(result);
+
+        return result;
     }
 
     @GetMapping("/car/{id}")
-    public String getFooById(@PathVariable String id,Model model) {
+    public String getFooById(@PathVariable String id,Model model) throws ParserConfigurationException, IOException, SAXException {
         Optional<Car> car = carRepo.findById(Long.parseLong(id));
         Car car_object = car.get();
 
@@ -232,8 +244,10 @@ public class IndexController {
         String carImageURL = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + manufacturer + ' ' + carModel + ' ' + year;
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(carImageURL, String.class);
-        log.info(result);
+        String parsed = parseXMLResponseCar(result);
+        log.info(parsed);
         model.addAttribute("car",car_object);
+        model.addAttribute("car_image", parsed);
 
         return "car";
     }
