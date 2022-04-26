@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="car card text-center">
+    <div class="car text-center">
         <h3 th:text="${car.manufacturer} + ' ' + ${car.model}">Something</h3>
         <div id="image">
             <img th:src="${car_image}" alt="Image goes here"/>
@@ -69,23 +69,52 @@
             </p>
             <div class="collapse" id="collapseExample">
                 <div class="card card-body container">
-                    <form method="post">
+                    <form method="post" th:action="@{/post_review}">
                         <div class="row justify-content-center">
                             <div class="mb-3 col-4">
                                 <label for="exampleFormControlInput1" class="form-label">Rating (out of 10)</label>
-                                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="10" max="10" min="1">
+                                <input name="rating" type="number" class="form-control" id="exampleFormControlInput1" placeholder="10" max="10" min="1">
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="mb-3 col-4">
                                 <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea name="desc" class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="200"></textarea>
                             </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-4">
+                                <label class="form-label">Stay anonymous?</label>
+                                <input type="checkbox" class="form-check-input" name="anonymous"/>
+                            </div>
+                        </div>
+                        <div class="row  invisible">
+                            <div class="mb-3 col-4">
+                                <input name="car_id" type="text" class="form-control" id="exampleFormControlInput3" th:value="${car.id}" readonly>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Post</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="reviews" class="container-fluid text-center" style="margin-top: 5vh;">
+        <h3>Reviews</h3>
+        <br/>
+        <div class="row justify-content-center" >
+            <div class="card justify-content-center" style="width: 18rem;" th:each="review: ${reviews}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="'Rating: ' + ${review.rating}"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${review.name}"></h6>
+                    <p class="card-text" th:text="'Description: ' + ${review.desc}"></p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 

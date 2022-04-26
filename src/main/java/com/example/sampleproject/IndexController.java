@@ -55,6 +55,8 @@ public class IndexController {
     private CarRepository carRepo;
     @Autowired
     private ReservationRepository reservationRepo;
+    @Autowired
+    private ReviewRepository reviewRepo;
 
     @Autowired
     EntityManager entityManager;
@@ -273,6 +275,8 @@ public class IndexController {
         model.addAttribute("car",car_object);
         model.addAttribute("car_image", parsed);
 
+        List<Review> reviews = reviewRepo.findAllByVehicleID(car_object.getId());
+        model.addAttribute("reviews", reviews);
         return "car";
     }
 
@@ -291,4 +295,32 @@ public class IndexController {
         return "reservation_form";
     }
 
+    @PostMapping("post_review")
+    public RedirectView postReview(@RequestParam(name="car_id") String car_id,
+                             @RequestParam(name="rating") String rating_raw,
+                             @RequestParam(name="anonymous") Optional<Boolean> anonymous,
+                             @RequestParam(name="desc") String desc,
+                             Model model) {
+        Long vehicleID = Long.parseLong(car_id);
+        Long userID = getLoggedInUser().getId();
+        Integer rating = Integer.parseInt(rating_raw);
+
+        Review newReview = new Review();
+        newReview.setDesc(desc);
+        newReview.setRating(rating);
+
+        newReview.setVehicleID(vehicleID);
+        newReview.setUserID(userID);
+
+        Boolean anon = anonymous.isPresent();
+
+        if (anon) {
+            newReview.setName("Anonymous");
+        } else {
+            User user = (userRepo.findById(userID)).get();
+            newReview.setName(user.getFirstName() + " " + user.getLastName());
+        }
+        reviewRepo.save(newReview);
+        return new RedirectView("/car/" + vehicleID);
+    }
 }
