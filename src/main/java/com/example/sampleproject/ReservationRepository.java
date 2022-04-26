@@ -16,6 +16,8 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
 
     @Query("SELECT r FROM Reservation r WHERE r.userID = ?1")
     public List<Reservation> findReservationsByUserID(long userID);
+
+
 }
 
 

@@ -110,17 +110,33 @@ public class IndexController {
     }
 
     @PostMapping("/process_reservation")
+    public String process_reservation(@RequestParam(name="vehicleID") String vehicleID, Reservation reservation) {
+        //System.out.println(reservation.getVehicleID());
+        Long car_id = Long.parseLong(vehicleID);
+        reservation.setVehicleID(car_id);
 
-    public String process_reservation(Reservation reservation) {
-        Car car = carRepo.getById(reservation.getVehicleID());
+        Optional<Car> car_raw = carRepo.findById(reservation.getVehicleID());
+        Car car = car_raw.get();
+
         User user = userRepo.getById(getLoggedInUser().getId());
 
         reservation.setLength();
         reservation.setUserID(user.getId());
-//        reservation.setVehicleID(car.getId()); currently this is useless, but if we implement a better car selection method it won't be
-//        reservation.setDailyVehicleRate(car.getDailyRate());
-//        reservation.setDriverAge(user.getAge());
+        reservation.setDailyVehicleRate(car.getDailyRate());
+        reservation.setTotalCost(reservation.calculateBill(5));
 
+
+
+        //reservation.setDriverAge(user.getAge());
+
+        /*System.out.println("Vehicle " + reservation.getVehicleID());
+        System.out.println(reservation.getId());
+        System.out.println(reservation.getUserID());
+        System.out.println(reservation.getStartDate() + " type is " + (reservation.getStartDate().getClass()));
+        System.out.println(reservation.getEndDate() + " type is " + (reservation.getEndDate().getClass()));
+        System.out.println("child seat" + reservation.getChildSeat());
+        System.out.println("insurance" + reservation.getRentalInsurance());
+        System.out.println("ski rack" + reservation.getSkiRack());*/
         reservationRepo.save(reservation);
         return "reservation_success";
     }
@@ -259,4 +275,20 @@ public class IndexController {
 
         return "car";
     }
+
+    @GetMapping("/make_reservation/{id}")
+    public String reserveCar(@PathVariable String id, Model model) {
+        Long car_id = Long.parseLong(id);
+        Optional<Car> car = carRepo.findById(car_id);
+        Car car_object = car.get();
+
+        Reservation newReservation = new Reservation();
+       // newReservation.setVehicleID(car_id);
+        model.addAttribute("reservation", newReservation);
+        model.addAttribute("car",car_object);
+        model.addAttribute("car_id", car_id);
+        System.out.println("Car id: " + car_id);
+        return "reservation_form";
+    }
+
 }

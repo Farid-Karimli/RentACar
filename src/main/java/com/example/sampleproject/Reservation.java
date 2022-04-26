@@ -3,6 +3,7 @@ package com.example.sampleproject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
@@ -15,19 +16,19 @@ import java.time.temporal.ChronoUnit;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
-    private long userID;
+    private Long userID;
 
     @Column(nullable = false)
-    private long vehicleID;
+    private Long vehicleID;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(name = "rental_insurance", nullable = false)
     private Boolean rentalInsurance;
@@ -44,19 +45,18 @@ public class Reservation {
 
 
     private double dailyVehicleRate;
-    private int driverAge;
+    private int driverAge = 21;
     private double length;
 
-
+    @Column(name = "total_cost")
+    private double totalCost = 0.0;
 
 
     public double calculateBill(int salesTax){
         double insuranceTotal = calculateInsurance();
         double equipmentTotal = calculateEquipmentFees();
 
-        double total = (1 + salesTax/100) * (length * dailyVehicleRate + insuranceTotal + equipmentTotal);
-
-        return total;
+        return (1 + salesTax/100.0) * (length * dailyVehicleRate + insuranceTotal + equipmentTotal);
 
     }
 
@@ -87,8 +87,8 @@ public class Reservation {
     }
 
     public void setLength() {
-        long lengthInHours = startDate.until(endDate, ChronoUnit.HOURS);
-        this.length = lengthInHours / 24;
+        long lengthInHours = startDate.until(endDate, ChronoUnit.DAYS);
+        this.length = lengthInHours;
     }
 
     public void setDriverAge(int driverAge){
@@ -101,17 +101,17 @@ public class Reservation {
 //    }
 
 
-    public long getId(){
+    public Long getId(){
         return id;
     }
 
-    public long getVehicleID() { return vehicleID;}
+    public Long getVehicleID() { return vehicleID;}
 
-    public long getUserID() { return userID;}
+    public Long getUserID() { return userID;}
 
-    public LocalDateTime getStartDate() { return startDate;}
+    public LocalDate getStartDate() { return startDate;}
 
-    public LocalDateTime getEndDate() { return endDate;}
+    public LocalDate getEndDate() { return endDate;}
 
     public Boolean getRentalInsurance() { return rentalInsurance;}
 
@@ -124,11 +124,11 @@ public class Reservation {
     }
 
     public void setStartDate(String date){
-        this.startDate = LocalDateTime.parse(date);
+        this.startDate = LocalDate.parse(date);
     }
 
     public void setEndDate(String date){
-        this.endDate = LocalDateTime.parse(date);
+        this.endDate = LocalDate.parse(date);
     }
 
     public void setUserID(long ID){
@@ -155,8 +155,11 @@ public class Reservation {
         skiRack = input;
     }
 
+    public double getTotalCost() {
+        return totalCost;
+    }
 
-
-
-
+    public void setTotalCost(double total_cost) {
+        this.totalCost = total_cost;
+    }
 }

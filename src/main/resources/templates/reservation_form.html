@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Sign Up - CodeJava</title>
+    <title>Reserve</title>
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -10,6 +10,39 @@
 
 </head>
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="images/RentACar.jpg" width="100px" height="100px" alt="logo"/></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cars">Cars</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Manage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/view_reservations">View and manage reservations</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/reviews">Reviews</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
     <div class="container text-center">
         <div>
             <h1>Make Reservation</h1>
@@ -21,50 +54,58 @@
                 <div class="form-group row">
                     <label class="col-4 col-form-label">Select pickup time/date: </label>
                     <div class="col-8">
-                        <input type="datetime-local" th:field="*{startDate}" class="form-control"  />
+                        <input type="date" th:field="*{startDate}" class="form-control"  />
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-4 col-form-label">Select drop-off time/date: </label>
                     <div class="col-8">
-                        <input type="datetime-local" th:field="*{endDate}" class="form-control"/>
+                        <input type="date" th:field="*{endDate}" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-4 col-form-label">Vehicle: </label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" th:value="${car.manufacturer} + ' ' +  ${car.model}  + ' ' +${car.year}"
+                               readonly/>
+                    </div>
+                </div>
+
+                <div class="form-group row invisible">
                     <label class="col-4 col-form-label">Vehicle ID: </label>
                     <div class="col-8">
-                        <input type="text" th:field="*{vehicleID}" class="form-control"
-                               required minlength="2" maxlength="20"/>
+                        <input type="text" class="form-control" name="vehicleID" th:placeholder="${car.manufacturer} + ' ' +  ${car.model}  + ' ' +${car.year}"
+                                th:value="${car_id}"  hidden />
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-4 col-form-label"> Include insurance? </label>
                     <div class="col-8">
-                        <input type="checkbox" th:field="*{rentalInsurance}" class="form-control">
+                        <input type="checkbox" th:field="*{rentalInsurance}" class="form-check-input" checked>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-4 col-form-label"> Include child seat? </label>
                     <div class="col-8">
-                        <input type="checkbox" th:field="*{childSeat}" class="form-control">
+                        <input type="checkbox" th:field="*{childSeat}" class="form-check-input" checked>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-4 col-form-label"> Include ski rack? </label>
                     <div class="col-8">
-                        <input type="checkbox" th:field="*{skiRack}" class="form-control">
+                        <input type="checkbox" th:field="*{skiRack}" class="form-check-input" checked>
                     </div>
                 </div>
 
 
 
                 <div>
-                    <button type="submit" class="btn btn-primary">Process</button>
+                    <button type="submit" class="btn btn-primary">Reserve</button>
                 </div>
             </div>
         </form>
