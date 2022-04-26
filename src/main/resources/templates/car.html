@@ -61,7 +61,33 @@
 
             </div>
         </div>
+        <div id="review" style="margin-top: 5vh;">
+            <p>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Post a review
+                </button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body container">
+                    <form method="post">
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-4">
+                                <label for="exampleFormControlInput1" class="form-label">Rating (out of 10)</label>
+                                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="10" max="10" min="1">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-4">
+                                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
 
 
 

@@ -42,8 +42,18 @@
 </nav>
 
 <main>
+
+    <div class="jumbotron container-fluid">
+        <h1 class="display-4">Welcome <b>[[${#request.userPrincipal.principal.fullName}]] !</b></h1>
+        <p class="lead">Here at RentACar, you can rent out the best cars for prices never seen anywhere else. </p>
+        <hr class="my-4">
+        <p>To reserve a car, use the Cars link above or click below!</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="/cars" role="button">Check out cars</a>
+        </p>
+    </div>
     <p>
-        Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
+
     </p>
 </main>
 
