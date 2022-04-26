@@ -1,6 +1,10 @@
 package com.example.sampleproject;
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.*;
+import java.util.logging.XMLFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +18,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.web.servlet.view.RedirectView;
+import org.w3c.dom.Document;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transaction;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import static java.rmi.server.LogStream.log;
 
@@ -102,6 +110,7 @@ public class IndexController {
     }
 
     @PostMapping("/process_reservation")
+
     public String process_reservation(Reservation reservation) {
         Car car = carRepo.getById(reservation.getVehicleID());
         User user = userRepo.getById(getLoggedInUser().getId());
@@ -161,6 +170,38 @@ public class IndexController {
         return "edit_account";
     }
 
+//    @GetMapping("/car_search")
+//    public String searchCars(Model model) {
+//        List<Car> listCars = carRepo.findAll();
+//        model.addAttribute("cars", listCars);
+//        return "cars";
+//    }
+
+    @PostMapping("/car_search")
+    public String searchCars(@RequestParam(name="value") String value, @RequestParam(name="filter") String filter, Model model) {
+        if (Objects.equals(filter, "capacity")) {
+            int capacity = Integer.parseInt(value);
+            model.addAttribute("cars",carRepo.findAllByCapacity(capacity));
+        } else if (filter.equals("manufacturer")){
+            model.addAttribute("cars",carRepo.findAllByManufacturer(value));
+        }  else if (filter.equals("model")) {
+            model.addAttribute("cars", carRepo.findAllByModel(value));
+        } else if (filter.equals("type")) {
+            model.addAttribute("cars", carRepo.findAllByType(value));
+        } else {
+            model.addAttribute("cars", carRepo.findAll());
+        }
+
+        return "cars";
+    }
+
+
+
+
+
+    @GetMapping("/SearchForCars")
+    public String searchForACar(Model model) {return "SearchForCars";}
+
     @PostMapping("/edit_account")
     @ResponseBody
     public RedirectView editAccountInfo(@RequestParam(name="firstname") String firstName,
@@ -187,4 +228,35 @@ public class IndexController {
 
 //    @GetMapping("/create_reservation")
 
+
+
+    public String parseXMLResponseCar(String response) throws ParserConfigurationException, IOException, SAXException {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+                new InputSource(new StringReader(response.toString())));
+
+        String result = document.getElementsByTagName("string").item(0).getTextContent();
+        System.out.println(result);
+
+        return result;
+    }
+
+    @GetMapping("/car/{id}")
+    public String getFooById(@PathVariable String id,Model model) throws ParserConfigurationException, IOException, SAXException {
+        Optional<Car> car = carRepo.findById(Long.parseLong(id));
+        Car car_object = car.get();
+
+        String manufacturer = car_object.getManufacturer();
+        String carModel = car_object.getModel();
+        int year = car_object.getYear();
+
+        String carImageURL = "http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=" + manufacturer + ' ' + carModel + ' ' + year;
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(carImageURL, String.class);
+        String parsed = parseXMLResponseCar(result);
+        log.info(parsed);
+        model.addAttribute("car",car_object);
+        model.addAttribute("car_image", parsed);
+
+        return "car";
+    }
 }

@@ -18,13 +18,13 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="manufacturer",nullable = false, unique = true, length = 45)
+    @Column(name="manufacturer",nullable = false, length = 45)
     private String manufacturer;
 
     @Column(name="model",nullable = false, length = 45)
     private String model;
 
-    @Column(name="release_year")
+    @Column(name="release_year", nullable = false)
     private int year;
 
     @Column(name = "MPG", nullable = false)
@@ -36,13 +36,13 @@ public class Car {
     /*
    change to be an integer that represents the number of cars available
     */
-    @Column(name = "availability",nullable = false)
+    @Column(name = "availability",nullable = true)
     private int availability;
 
     @Column(name = "type",nullable = true)
     private String type;
 
-    @Column(name = "daily_rate",nullable = false)
+    @Column(name = "daily_rate",nullable = true)
     private double dailyRate;
 
 

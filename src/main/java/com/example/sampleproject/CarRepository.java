@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 /* A JpaRepository has pre-defined methods for executing SQL queries on the database
    You can add your own, like the one below. It comes with its own as well, like findAll().
@@ -19,6 +20,16 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
     @Query("Select u from Car u Where u.availability > 0")
     List<Car> findCarByAvailabilty(boolean True);
+
+    @Query("select u from Car u where u.manufacturer = ?1")
+    List<Car> findAllByManufacturer(String manufacturer);
+
+    @Query("select u from Car u where u.capacity = ?1")
+    List<Car> findAllByCapacity(int capacity);
+
+    List<Car> findAllByModel(String model);
+
+    List<Car> findAllByType(String type);
 
 
 }
