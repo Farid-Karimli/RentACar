@@ -16,24 +16,26 @@ public class User {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // The PK of the table
+
 
     @Column(nullable = false, unique = true, length = 45)
-    private String email;
+    private String email; // Email should be present and is unique
 
-    @Column(nullable = false, length = 64)
-    private String password;
+    @Column(nullable = false, unique = true, length = 64)
+    private String password; // Password should be present and is unique
 
     @Column(name = "first_name", nullable = false, length = 20)
-    private String firstName;
+    private String firstName; // First name should be present
+
 
     @Column(name = "last_name", nullable = false, length = 20)
-    private String lastName;
+    private String lastName; // Last name should be present
 
     @Column(name = "phone", length = 10)
-    private String phone;
+    private String phone; // Phone number is optional
 
-    // getters and setters are not shown
+    // getters and setters are below
 
     public String getPassword() {
         return password;

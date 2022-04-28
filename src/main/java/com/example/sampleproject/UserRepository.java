@@ -13,12 +13,16 @@ import javax.transaction.Transactional;
    public <return type> findCarBy<insert attribute name here>(<attribute type> attribute) is the general format for a method.
 */
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    /* Retrieve all users with a certain email */
     @Query("SELECT u FROM User u WHERE u.email = ?1") // Can define your own SQL queries
     public User findByEmail(String email);
 
+    /* Retrieves all user with a certain ID */
     @Query("SELECT u FROM User u WHERE u.id = ?1")
     public User findById(int id);
 
+    /* For modifying a user's information. Takes the id of the user in question, along with the new information. */
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("update User c set c.firstName = :firstname, c.lastName = :lastname, c.email = :email, c.phone = :phone WHERE c.id = :Id")

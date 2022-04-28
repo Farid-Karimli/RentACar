@@ -37,29 +37,29 @@ import javax.xml.parsers.ParserConfigurationException;
 import static java.rmi.server.LogStream.log;
 
 
+/* Over-arching controller of the app. All of the  routes and their respective handler functions are defined here */
 @Controller
 public class IndexController {
-    @Autowired
-    JdbcTemplate jdbcTemplate; // For connecting to the database
 
-    /* This is the route for when the user first enters the app */
+    /* This is the route for when the user first enters the app. Greeted with a choice of login or registration */
     @GetMapping("/")
     public String index(Model model) {
         return "index";
     }
 
+    @Autowired
+    private UserRepository userRepo; // Access to the User table of the database
 
     @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private CarRepository carRepo;
-    @Autowired
-    private ReservationRepository reservationRepo;
-    @Autowired
-    private ReviewRepository reviewRepo;
+    private CarRepository carRepo; // Access to the Vehicle table of the database
 
     @Autowired
-    EntityManager entityManager;
+    private ReservationRepository reservationRepo;  // Access to the Reservation table of the database
+
+    @Autowired
+    private ReviewRepository reviewRepo; // Access to the Review table of the database
+
+    private static final Logger log = LoggerFactory.getLogger(SampleprojectApplication.class); // Used for logging messages
 
     /* Route for the registration, the user is greeted with a form for their login info */
     @GetMapping("/register")
@@ -72,31 +72,19 @@ public class IndexController {
     /* After user registers and submit, this function handles the creation of the user and the assignment of information */
     @PostMapping("/process_register")
     public String processRegister(User user) {
-        /*BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());*/
         user.setPassword(user.getPassword());
-        userRepo.save(user); // saves the user to the database
+        userRepo.save(user); // Saves the user to the database
 
         return "register_success";
     }
 
-    // Shows the list of users, was part of the tutorial I used
-    @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> listUsers = userRepo.findAll();
-        model.addAttribute("listUsers", listUsers);
-
-        List<Car> cars = carRepo.findAll();
-        model.addAttribute("cars",cars);
-
-        return "users";
-    }
-
+    /* Home page */
     @GetMapping("/home")
     public String home(Model model) {
         return "home";
     }
 
+    /* Route that shows the list of available along with their features */
     @GetMapping("/cars")
     public String cars(Model model) {
         List<Car> cars = carRepo.findAll();
@@ -105,15 +93,15 @@ public class IndexController {
         return "cars";
     }
 
+    /* Render the form for the creation of a reservation */
     @GetMapping("/make_reservation")
     public String showReservationForm(Model model) {
         model.addAttribute("reservation", new Reservation());
         return "reservation_form";
     }
-
+    /* Handle the submitted reservation info and save to the database */
     @PostMapping("/process_reservation")
     public String process_reservation(@RequestParam(name="vehicleID") String vehicleID, Reservation reservation) {
-        //System.out.println(reservation.getVehicleID());
         Long car_id = Long.parseLong(vehicleID);
         reservation.setVehicleID(car_id);
 
@@ -126,23 +114,11 @@ public class IndexController {
         reservation.setUserID(user.getId());
         reservation.setDailyVehicleRate(car.getDailyRate());
         reservation.setTotalCost(reservation.calculateBill(5));
-
-
-
-        //reservation.setDriverAge(user.getAge());
-
-        /*System.out.println("Vehicle " + reservation.getVehicleID());
-        System.out.println(reservation.getId());
-        System.out.println(reservation.getUserID());
-        System.out.println(reservation.getStartDate() + " type is " + (reservation.getStartDate().getClass()));
-        System.out.println(reservation.getEndDate() + " type is " + (reservation.getEndDate().getClass()));
-        System.out.println("child seat" + reservation.getChildSeat());
-        System.out.println("insurance" + reservation.getRentalInsurance());
-        System.out.println("ski rack" + reservation.getSkiRack());*/
         reservationRepo.save(reservation);
         return "reservation_success";
     }
 
+    /* Displays the user's reservations */
     @GetMapping("/view_reservations")
     public String user_reservations(Model model) {
         List<Reservation> user_reservations = reservationRepo.findReservationsByUserID(getLoggedInUser().getId());
@@ -152,7 +128,7 @@ public class IndexController {
     }
 
 
-    private static final Logger log = LoggerFactory.getLogger(SampleprojectApplication.class); // Used for logging anything
+    /* Returns the User object of the currently logged-in user */
     public User getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = null;
@@ -178,22 +154,18 @@ public class IndexController {
 
         return loggedInUser;
     }
+
+    /* Displays the user's information */
     @GetMapping("/account")
     public String getAccountInfo(Model model) {
         model.addAttribute("user",getLoggedInUser());
         return "account";
     }
+    /* Renders a form for the user to change his account info */
     @GetMapping("/edit_account")
     public String editAccountView(Model model) {
         return "edit_account";
     }
-
-//    @GetMapping("/car_search")
-//    public String searchCars(Model model) {
-//        List<Car> listCars = carRepo.findAll();
-//        model.addAttribute("cars", listCars);
-//        return "cars";
-//    }
 
     @PostMapping("/car_search")
     public String searchCars(@RequestParam(name="value") String value, @RequestParam(name="filter") String filter, Model model) {
@@ -213,20 +185,13 @@ public class IndexController {
         return "cars";
     }
 
-
-
-
-
-    @GetMapping("/SearchForCars")
-    public String searchForACar(Model model) {return "SearchForCars";}
-
+    /* Handles the user's request to change account info. Updates the logged-in user's info in the SecurityContext */
     @PostMapping("/edit_account")
     @ResponseBody
     public RedirectView editAccountInfo(@RequestParam(name="firstname") String firstName,
                                   @RequestParam(name="lastname") String lastname,
                                   @RequestParam(name="email") String email,
                                   @RequestParam(name="phone") String phone) {
-
 
         Long loggedInUserId = getLoggedInUser().getId();
 
@@ -244,20 +209,16 @@ public class IndexController {
         return new RedirectView("/account");
     }
 
-//    @GetMapping("/create_reservation")
-
-
-
+    /* Used for the car images. Parses the XML response of the API */
     public String parseXMLResponseCar(String response) throws ParserConfigurationException, IOException, SAXException {
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
                 new InputSource(new StringReader(response.toString())));
 
         String result = document.getElementsByTagName("string").item(0).getTextContent();
-        System.out.println(result);
-
         return result;
     }
 
+    /* Displays information about a certain vehicle */
     @GetMapping("/car/{id}")
     public String getFooById(@PathVariable String id,Model model) throws ParserConfigurationException, IOException, SAXException {
         Optional<Car> car = carRepo.findById(Long.parseLong(id));
@@ -271,7 +232,6 @@ public class IndexController {
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(carImageURL, String.class);
         String parsed = parseXMLResponseCar(result);
-        log.info(parsed);
         model.addAttribute("car",car_object);
         model.addAttribute("car_image", parsed);
 
@@ -280,6 +240,7 @@ public class IndexController {
         return "car";
     }
 
+    /* Displays the form for the creation of a reservation */
     @GetMapping("/make_reservation/{id}")
     public String reserveCar(@PathVariable String id, Model model) {
         Long car_id = Long.parseLong(id);
@@ -287,14 +248,13 @@ public class IndexController {
         Car car_object = car.get();
 
         Reservation newReservation = new Reservation();
-       // newReservation.setVehicleID(car_id);
         model.addAttribute("reservation", newReservation);
         model.addAttribute("car",car_object);
         model.addAttribute("car_id", car_id);
-        System.out.println("Car id: " + car_id);
         return "reservation_form";
     }
 
+    /* Handles the user's request to post a review */
     @PostMapping("post_review")
     public RedirectView postReview(@RequestParam(name="car_id") String car_id,
                              @RequestParam(name="rating") String rating_raw,
@@ -312,7 +272,7 @@ public class IndexController {
         newReview.setVehicleID(vehicleID);
         newReview.setUserID(userID);
 
-        Boolean anon = anonymous.isPresent();
+        boolean anon = anonymous.isPresent();
 
         if (anon) {
             newReview.setName("Anonymous");
