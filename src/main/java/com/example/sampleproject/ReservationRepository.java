@@ -1,6 +1,7 @@
 package com.example.sampleproject;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("SELECT r FROM Reservation r WHERE r.userID = ?1")
     public List<Reservation> findReservationsByUserID(long userID);
 
+    @Modifying
+    public void deleteById(long resID);
 
 }
 

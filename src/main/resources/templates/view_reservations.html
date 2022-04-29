@@ -46,7 +46,7 @@
                 <th>End Date</th>
                 <th>Vehicle</th>
                 <th>Total Cost</th>
-
+                <th>Cancel</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +55,7 @@
                     <td th:text="${reservation.endDate}"></td>
                     <td><a th:href="@{'/car/' + ${reservation.vehicleID}}">View vehicle</a></td>
                     <td th:text="${reservation.totalCost}"></td>
+                    <td><a th:href="@{'/delete_reservation/' + ${reservation.id}}">Cancel</a></td>
             </tr>
         </tbody>
     </table>

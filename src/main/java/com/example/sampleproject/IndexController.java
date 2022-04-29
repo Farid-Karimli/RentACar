@@ -282,5 +282,12 @@ public class IndexController {
         }
         reviewRepo.save(newReview);
         return new RedirectView("/car/" + vehicleID);
+
+    }
+
+    @GetMapping("/delete_reservation/{id}")
+    public RedirectView deleteRes(@PathVariable String id) {
+        reservationRepo.deleteById(Long.parseLong(id));
+        return new RedirectView("/view_reservations");
     }
 }
