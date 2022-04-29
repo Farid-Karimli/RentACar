@@ -285,6 +285,7 @@ public class IndexController {
 
     }
 
+    /* Handles the deletion of reservation with id 'id', redirects back to the list of reservations view*/
     @GetMapping("/delete_reservation/{id}")
     public RedirectView deleteRes(@PathVariable String id) {
         reservationRepo.deleteById(Long.parseLong(id));
